@@ -9,7 +9,7 @@ pipeline {
       steps {
         container(name: 'kaniko', shell: '/busybox/sh') {
           sh '''#!/busybox/sh
-            /kaniko/executor --context `pwd` --destination bjgomes/hello-kaniko:latest
+            /kaniko/executor --context `pwd` --destination bjgomes/tomcat:latest
           '''
         }
       }
