@@ -14,5 +14,14 @@ pipeline {
         }
       }
     }
+    stage('Deploy to kubernetes') {
+      steps {
+        container(name: 'kubectl', shell: '/busybox/sh') {
+          sh '''#!/busybox/sh
+            kubectl apply -f manifest.yaml
+          '''
+        }
+      }
+    }
   }
 }
