@@ -1,45 +1,19 @@
 pipeline {
-    agent {
-  label 'azure'
-}
-
-environment {
-    registryCredentials = 'docker'
-    registry = 'bjgomes/tomcat'
-}
-
-    stages {
-        stage('git'){
-            steps {
-                git branch: 'main', url: 'https://github.com/bdgomey/tomcat.git'
-            }
-        }
-        stage('MVNBuild') {
-            steps {
-                sh "mvn clean install"
-            }
-        }
-        stage('DockerBuild') {
-            steps {
-                script {
-                    dockerImage = docker.build(registry)
-                }
-            }
-        }
-        stage('DockerPush') {
-            steps {
-                script {
-                    docker.withRegistry('', registryCredentials) {
-                        dockerImage.push()
-                    }
-                }
-            }
-        }
+  agent {
+    kubernetes {
+      yamlFile 'pod.yaml'
     }
-    post {
-        always {
-            archiveArtifacts artifacts: '**/*.war'
-            sh 'docker image rm $(docker image ls -q)'
+  }
+  stages {
+    stage('Build with Kaniko') {
+      steps {
+        container(name: 'kaniko', shell: '/busybox/sh') {
+          sh '''#!/busybox/sh
+            echo "FROM jenkins/inbound-agent:latest" > Dockerfile
+            /kaniko/executor --context `pwd` --destination bjgomes/hello-kaniko:latest
+          '''
         }
+      }
     }
+  }
 }
