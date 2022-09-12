@@ -1,4 +1,4 @@
-FROM tomcat
+FROM tomcat:latest
 
 RUN apt-get update && apt-get -y upgrade
 
