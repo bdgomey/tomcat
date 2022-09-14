@@ -8,9 +8,9 @@ trigger:
 
 pool:
   vmImage: ubuntu-latest
-  imageRepository: bjgomes/tomcat
-  dockerfilePath: /
-  dockerRegistryServiceConnection: docker
+  imageRepository: 'bjgomes/tomcat'
+  dockerfilePath: '**/Dockerfile'
+  dockerRegistryServiceConnection: 'docker'
   tag: latest
 stages:
   - stage: Build
