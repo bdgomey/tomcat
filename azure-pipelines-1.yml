@@ -10,16 +10,17 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-- name: imageRepository
-  value: bjgomes/tomcat
-- name: dockerfilePath
-  value: '**/Dockerfile'
-- name: dockerRegistryServiceConnection
-  value: 'docker'
-- name: tag
-  value: latest
-- name: k8sNamespace
-  value: default
+- group: tomcatVariables
+# - name: imageRepository
+#   value: bjgomes/tomcat
+# - name: dockerfilePath
+#   value: '**/Dockerfile'
+# - name: dockerRegistryServiceConnection
+#   value: 'docker'
+# - name: tag
+#   value: latest
+# - name: k8sNamespace
+#   value: default
 
 stages:
   - stage: Build
