@@ -14,7 +14,7 @@ variables:
   value: repository
 - name: dockerfilePath
   value: '**/Dockerfile'
-- name: containerRegistry
+- name: dockerRegistryServiceConnection
   value: 'docker'
 - name: tag
   value: latest
@@ -34,7 +34,7 @@ stages:
           command: buildAndPush
           repository: $(imageRepository)
           dockerfile: $(dockerfilePath)
-          containerRegistry: $(containerRegistry)
+          containerRegistry: $(dockerRegistryServiceConnection)
           tags: |
             $(tag)
 
