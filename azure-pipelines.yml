@@ -57,5 +57,5 @@ stages:
                 action: deploy
                 namespace: $(k8sNamespace)
                 manifests: |
-                  $(Pipeline.Workspace)/manifest.yaml
+                  $(Pipeline.Workspace)/s/manifest.yaml
 
