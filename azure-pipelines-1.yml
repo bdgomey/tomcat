@@ -10,6 +10,10 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: ls $(Pipeline.Workspace)
+- script: ls $(Pipeline.Workspace)/a
+  displayName: 'Run a one-line script'
+- script: ls $(Pipeline.Workspace)/b
+  displayName: 'Run a one-line script'
+- script: ls $(Pipeline.Workspace)/s
   displayName: 'Run a one-line script'
 
