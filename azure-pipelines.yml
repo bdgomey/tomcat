@@ -18,7 +18,8 @@ variables:
   value: 'docker'
 - name: tag
   value: latest
-
+- name: k8sNamespace
+  value: default
 
 
 stages:
@@ -41,6 +42,29 @@ stages:
       - task: PublishBuildArtifacts@1
         inputs:
           pathToPublish: '$(Build.ArtifactStagingDirectory)'
-          artifactName: drop
+          artifactName: 'drop'
 
+  - stage: Deploy
+    displayName: Deploy stage
+    dependsOn: Build
+    jobs:
+    - deployment: Deploy
+      displayName: Deploy job
+      environment: 'myenv.default' #customize with your environment
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - task: DownloadPipelineArtifact@2
+              inputs:
+                artifactName: 'drop'
+                downloadPath: '$(Build.ArtifactStagingDirectory)'
+
+            - task: KubernetesManifest@0
+              displayName: Deploy to Kubernetes cluster
+              inputs:
+                action: deploy
+                namespace: $(k8sNamespace)
+                manifests: |
+                  '**/manifests.yaml'
 
