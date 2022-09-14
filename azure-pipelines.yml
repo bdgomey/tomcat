@@ -10,7 +10,8 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-- group: tomcatVariables
+- group: KeyVaultSecrets
+# - group: tomcatVariables
 # - name: imageRepository
 #   value: bjgomes/tomcat
 # - name: dockerfilePath
