@@ -11,7 +11,7 @@ pool:
 
 variables:
 - name: imageRepository
-  value: repository
+  value: bjgomes/tomcat
 - name: dockerfilePath
   value: '**/Dockerfile'
 - name: dockerRegistryServiceConnection
