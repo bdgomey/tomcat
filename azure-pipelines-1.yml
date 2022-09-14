@@ -18,8 +18,8 @@ variables:
   value: 'docker'
 - name: tag
   value: latest
-# - name: k8sNamespace
-#   value: default
+- name: k8sNamespace
+  value: default
 
 stages:
   - stage: Build
@@ -43,3 +43,26 @@ stages:
           path: $(Pipeline.Workspace)/s/manifests
 
 
+  - stage: Deploy
+    displayName: Deploy stage
+    dependsOn: Build
+    jobs:
+    - deployment: Deploy
+      displayName: Deploy job
+      environment: 'myenv.default' #customize with your environment
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+            - task: DownloadPipelineArtifact@2
+              inputs:
+                artifactName: 'manifests'
+                downloadPath: '$(System.ArtifactsDirectory)/manifests'
+
+            - task: KubernetesManifest@0
+              displayName: Deploy to Kubernetes cluster
+              inputs:
+                action: deploy
+                namespace: $(k8sNamespace)
+                manifests: |
+                  $(System.ArtifactsDirectory)/manifests/manifest.yaml
