@@ -38,7 +38,10 @@ stages:
           containerRegistry: $(dockerRegistryServiceConnection)
           tags: |
             $(tag)
-
+      - task: PublishPipelineArtifact@1
+        inputs:
+          artifactName: 'manifests'
+          path: $(Pipeline.Workspace)/s/manifests
 
   - stage: Deploy
     displayName: Deploy stage
@@ -57,5 +60,5 @@ stages:
                 action: deploy
                 namespace: $(k8sNamespace)
                 manifests: |
-                  $(Pipeline.Workspace)/s/manifest.yaml
+                  $(Pipeline.Workspace)/s/manifests/manifest.yaml
 
